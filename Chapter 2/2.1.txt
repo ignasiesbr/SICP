@@ -1,0 +1,33 @@
+;2.1
+
+(define (gcd a b)
+  (if (= b 0)
+      a
+      (gcd b (remainder a b))))
+
+
+;Write a better version of make-rat, so if the both n and d are positive, stay positive
+;and if one of them are negative, the num will be negative
+
+;if we use mod a b in the gcd program, the make-rat will be OK.
+;because mod returns negative values and remainder dont.
+
+(define (make-rat n d)
+  (let ((g (gcd n d)))
+    (if (< d 0)
+        (cons (/ (* n -1) g) (/ (* d -1) g))
+        (cons (/ n g) (/ d g)))))
+
+
+;^ NORMAL version
+
+;VERSION USING mod
+
+(define (gcd a b)
+  (if (= b 0)
+      a
+      (gcd b (mod a b))))
+
+(define (make-rat n d)
+  (let ((g (gcd n d)))
+    (cons (/ n g) (/ d g))))

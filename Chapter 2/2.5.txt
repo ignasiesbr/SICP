@@ -1,0 +1,33 @@
+;2.5
+
+(define (cons a b)
+  (* (expt 2 a)
+     (expt 3 b)))
+
+;cons 4 5-> 3888
+; Now to define cdr and car, we need to extract from this 3888 the numbers 4 and 5.
+; To do that we need the divide count the expt from 2^a and to exctract the cdr 3^b
+
+;Number Number-> Number
+;interp count how many times n can be divided by d.
+;Iterative
+(define (count-div n d)
+  (define (iter x acc)
+    (if (= 0 (mod x d)) (iter (/ x d) (+ acc 1)) acc))
+    (iter n 0))
+
+;Recursive (for training)
+;
+(define (count-div.v2 n d)
+  (cond
+    [(= 0 (mod n d)) (+ (count-div.v2 (/ n d) d) 1)]
+    [else 
+      0]))
+  
+  ;so the cdr and car..
+
+(define (car p)
+  (count-div p 2))
+
+(define (cdr p)
+  (count-div p 3))

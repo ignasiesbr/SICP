@@ -1,0 +1,30 @@
+;2.6 
+
+(define zero (lambda (f) (lambda (x) x)))
+
+(define (add-1 n)
+  (lambda (f) (lambda (x) (f ((n f) x)))))
+
+  ;LAMBDA CALCULUS by Alonzo Church
+
+;Basically the idea behind numbers is the times we apply a procedure f 
+;in zero we never apply f
+;in one it iwll be (lambda(f) (lambda(x) (f x)))
+; two-- (f (f x))
+; and so on.
+
+(define one (lambda(f) (lambda(x) (f x))))
+(define two (lambda(f) (lambda(x) (f (f x)))))
+
+; to test
+
+(define (inc n) (+ n 1))
+
+(define (addition-church a b)
+  (lambda(f) (lambda(x) ((a f) ((b f) x)))))
+
+;explanation (from bill the lizard) : 
+;Instead of wrapping n in one extra function call, we'll wrap it in m extra calls
+
+(define three (addition-church one two))
+

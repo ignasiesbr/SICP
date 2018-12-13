@@ -1,0 +1,43 @@
+;2.2
+
+
+(define (make-segment x1 y1 x2 y2)
+  (cons (cons x1 y1) (cons x2 y2)))
+(define seg1 (make-segment 1 2 3 4))
+(define (start-segment seg)
+  (cons (car (car seg)) (cdr (car seg))))
+
+(define (end-segment seg)
+  (cons (car (cdr seg)) (cdr (cdr seg))))
+(define (x-point point)
+  (car point))
+(define (y-point point)
+  (cdr point))
+(define (segment-midpoint seg)
+  (cons (/ (+ (x-point (start-segment seg)) (x-point (end-segment seg))) 2)
+        (/ (+ (y-point (start-segment seg)) (y-point (end-segment seg))) 2)))
+
+;2.3
+
+;Implement a representation for rectangles in a plane.
+; A rectangle will be defined by its two opposite corners.
+;Pair Pair -> Pair
+(define (make-rectangle a b)
+  (cons a b))
+
+(define (rect-perimeter rect)
+  ( + (* 2 (abs (- (x-point (start-segment rect)) (x-point (end-segment rect)))))
+      (* 2 (abs (- (y-point (end-segment rect)) (y-point (start-segment rect)))))))
+(define (area-rect rect)
+  (* (abs (- (x-point (start-segment rect)) (x-point (end-segment rect)))) 
+      (abs (- (y-point (end-segment rect)) (y-point (start-segment rect))))))
+
+;Implement a new representation for rectangles and check if rect-perimeter and area-rect work for this new representation
+;Pair Number Number-> rectangle
+;where the point will be the one in the left inferior corner
+(define (make-rectangle.v2 p w h)
+  (cons p (cons (+ (x-point p) h) (+ w (y-point p)))))
+
+(define rect2 (make-rectangle.v2 (cons 1 2) 2 2))
+
+;WORKS OK
