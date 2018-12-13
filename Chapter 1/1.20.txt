@@ -1,0 +1,36 @@
+;1.20
+
+; Euclid's algorithm
+
+(define (gcd a b)
+  (if (= b 0)
+      a
+      (gcd b (remainder a b))))
+
+;GDC (a,b) = GDC = (b,r)
+;where r is the remainder between a between b.
+
+
+;Evalutate (gcd 206 40) with normal-order evaluation and applicative evaluation
+
+;Normal
+
+;(gcd 40 (remainder 206 40))
+;(gcd (remainder 206 40) (remainder 40 (remainder 206 40)))
+;(gcd (remainder 40 (remainder 206 40)) (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))
+;check in bill the lizard
+
+
+;Applicative
+
+;(gcd 206 40)
+;(gcd 40 (remainder 206 40))
+;(gcd 40 6)
+;(gcd 6 (remainder 40 6))
+;(gcd 6 4)
+;(gcd 4 (remainder 6 4))
+;(gcd 4 2)
+;(gcd 2 (remainder 4 2))
+;(gcd 2 0)
+;2
+

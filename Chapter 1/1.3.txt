@@ -1,0 +1,16 @@
+;1.3 
+
+(define (sqr x) (* x x))
+(define (sqr-sum x y) (+ (sqr x) (sqr y)))
+(define (square-sum-larger a b c)
+  (cond
+   [(not (or (> a b) (> a c))) (sqr-sum b c)]
+   [else
+    (square-sum-larger b c a)]))
+
+;another way
+;sums all the squares and substracts the square of the minium number.
+
+(define (square-sum-larger.v2 a b c)
+	(- (+ (sqr a) (sqr b) (sqr c)) (sqr (min a b c))))
+

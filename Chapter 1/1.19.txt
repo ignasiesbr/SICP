@@ -1,0 +1,33 @@
+;1.19
+
+(define (fib n)
+  (fib-iter 1 0 0 1 n))
+
+(define (fib-iter a b p q count)
+  (cond ((= count 0) b)
+        ((even? count)
+         (fib-iter a
+                   b
+                   (+ (* q q) (* p p))      ; compute p'
+                   (+ (* 2 p q) (* q q))    ; compute q'
+                   (/ count 2)))
+        (else (fib-iter (+ (* b q) (* a q) (* a p))
+                        (+ (* b p) (* a q))
+                        p
+                        q
+                        (- count 1)))))
+
+;deduction in paper.
+;resolve b2 = bq' + aq'
+; with the substitution of b2 with the previous quotients.
+;b and a disappears and only keeps p q p' q'.
+
+;I think that you have to get that when you apply the transformation Tpq twice, it's the same
+;as applying the transformation with p' = q^2 + p^2 and q' = 2qp + q^2
+;so when it's even you apply this to reduce the steps and get an order of grwoth of O(log(n))
+
+;to see that applying twice Tpq is the same as applying Tp'q' you have check that the solution that appeears
+;in the process i mentioned earlier  the resuluts you get with the b2 equation can be applied into a2.
+
+
+

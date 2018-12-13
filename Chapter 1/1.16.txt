@@ -1,0 +1,17 @@
+;1.16
+
+(define (even? n)
+   (= (remainder n 2) 0))	
+
+(define (square x)
+	(* x x ))
+
+(define (fast-expt b n)
+	(define (expt-iter b n product)
+		(cond
+			[(= n 0) product]
+			[(even? n) (expt-iter (square b) (/ n 2) product))
+			[else	
+				(expt-iter b (- n 1) (* product b))]))
+	(expt-iter b n 1))
+	

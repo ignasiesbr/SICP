@@ -1,0 +1,52 @@
+;1.32 
+
+;1.32 
+;show that sum and product are abstractions of a more general case
+;(accumulate combiner null-value term a next b)
+
+;to make the abstraction I will look at how product and sum are made.
+
+(define (sum term a next b)
+  (if (> a b)
+      0
+      (+ (term a)
+         (sum term (next a) next b))))
+
+(define (product term a next b)
+	(if (> a b) 
+		1 
+		(* (term a) 
+			 (product term (next a) next b))))
+
+;recursive
+
+(define (accumulate combiner null-value term a next b)
+	(if (> a b) 
+      null-value 
+      (combiner (term a) (accumulate combiner null-value term (next a) next b))))
+
+(define (sum-via-acc term a next b)
+	(accumulate + 0 term a next b))
+
+(define (product-via-acc term a next b)
+  (accumulate * 1 term a next b))
+
+;(sum (lambda(x) x) 0 (lambda(x) (+ x 1)) 5) => 15
+;(sum-via-acc (lambda(x) x) 0 (lambda(x) (+ x 1)) 5) => 15
+;(product (lambda(x) x) 1 (lambda(x) (+ x 1)) 5) => 120
+;(product-via-acc (lambda(x) x) 1 (lambda(x) (+ x 1)) 5) => 120
+
+;WORKS OK
+
+;Iterative
+
+(define (accumulate.v2 combiner null-value term a next b)
+  (define (acc-iter a res)
+    (if (> a b) res (acc-iter (next a) (combiner (term a) res))))
+  (acc-iter a null-value))
+
+(define (sum-via-acc-iter term a next b)
+  (accumulate.v2 + 0 term a next b))
+
+;(sum-via-acc-iter (lambda(x) x) 0 (lambda(x) (+ x 1)) 5) => 15
+

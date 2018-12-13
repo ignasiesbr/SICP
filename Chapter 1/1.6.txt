@@ -1,0 +1,15 @@
+;1.6
+
+(define (new-if predicate then-clause else-clause)
+  (cond (predicate then-clause)
+        (else else-clause)))
+
+(define (sqrt-iter guess x)
+  (new-if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x) x)))
+
+;what happens?
+;it enters in an infinite loop because new-if is a function, and because Scheme uses applicative-order eval.
+;it evaluations all its arguments before checking it.
+;so it evaluates sqrt-iter which have new-if in it->infinite loop

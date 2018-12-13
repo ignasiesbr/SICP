@@ -1,0 +1,18 @@
+;1.5 Ben Bitdiddle 
+(define (p) (p))
+
+(define (test x y)
+  (if (= x 0)
+      0
+      y))
+
+(test 0 (p))
+
+;What will happen if the intepreter is using applicative-order evaluation?
+;applicative-order evaluates first the arguments and then apply, because (p) is infinitly refering to itself
+;the process would never terminate.
+;Normal-order?
+;Because the normal order expands in a first place
+;then the program would face the (= 0 0) #t and it wouldn't evaluate p
+;result 0.
+

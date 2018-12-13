@@ -1,0 +1,13 @@
+;1.12
+;Number number->Number
+;interprettation given a number of row and a column, returns the result of the Pascal's triangle
+;in the given position
+;first row and column is 0.
+
+(define (pascal row col)
+	(cond
+		[(or (= row 0) (= col 0)) 1]
+		[else
+			(+ (pascal (- row 1) (- col 1)) (pascal (- row 1) col))]))
+
+	

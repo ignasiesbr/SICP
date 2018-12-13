@@ -1,0 +1,17 @@
+;1.14 
+;Tree drawed in notebook.
+;to see an online drawing check Bill the Lizard site.
+
+;reminder
+;space-> grows proportional to its max depth
+;steps -> grows proportional to the number of nodes in the tree
+
+;space -> O(n), it depends on the amount so a higher amount a higher space
+;steps -> 
+;with 1 type of coin
+;O(n)
+;with 2 types of coins
+;O(n^2) . . .
+;so with 5 types of coins
+;O(n^5)
+

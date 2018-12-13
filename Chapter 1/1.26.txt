@@ -1,0 +1,17 @@
+;1.26
+;Louis....
+
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (* (expmod base (/ exp 2) m)
+                       (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+
+;why this version is way slower than the original one?
+
+;because it have to calculate (expmod base (/ exp 2) m) twice.
+;this kills the O (log(n)) and makes the process O (n)

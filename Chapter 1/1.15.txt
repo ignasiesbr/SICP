@@ -1,0 +1,15 @@
+;1.15
+
+; a) How many times p is applied when we do (sine 12.15)
+; 5 -> (p(p(p(p(p 0.02815)))))
+
+;b) What is the order of growth as a function of a
+;space-> each input size is increased by a factor of 3, 
+;steps-> each 3 times the angle is incresead it increases 1 step.
+;the increase of the input needed to increase the space or the steps of the algorithm is not linear
+;because as the input grows with a factor of 3, the space and steps will only need 1 more extra step.
+;so O(log(n))
+;pretty hard to explain
+;the idea behind it is that as the input grows from (example) 0 to 3 (3 in total) we need 1 step.
+;but if the input grows from 1000 to 3000 (2000 in total) we still need only 1 extra step.
+;this makes the O(log(n))

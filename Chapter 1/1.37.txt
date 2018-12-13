@@ -1,0 +1,26 @@
+; Number Number Number-> Number
+;computes the endless fraction N1 / D1 + (N2 /D2 + ...)
+;with d and n = 1, returns the golden ratio.
+;recursive
+(define (cont-frac d n k)
+  (if (= k 0)
+       (/ n d)
+       (/ n (+ d (cont-frac d n (- k 1))))))
+
+; (/ 1 (cont-frac 1 1 11)) 11 recursion needed to get the golden ratio with a precision of 4 decimals.
+
+;iterative
+
+(define (cont-frac.v2 d n k)
+  (define (frac-iter k res)
+    (newline)
+    (display res)
+    (if (= k 0)
+        res
+        (frac-iter (- k 1) (/ n (+ res d)))))
+  (frac-iter k 0))
+ ;(cont-frac.v2 1 1 12) ; needs 13 steps, 2 extra
+  
+
+
+       

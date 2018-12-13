@@ -1,0 +1,11 @@
+;1.46
+
+(define (iterative-improvment good-enough? improve)
+  (lambda(guess) (if (good-enough? guess) guess ((iterative-improvment good-enough? improve) (improve guess)))))
+
+(define (sqrt x)
+  ((iterative-improvment (lambda(guess) (< (abs (- (* guess guess) x)) 0.001)) (lambda(guess) (/ (+ guess (/ x guess)) 2))) 1.0))
+
+;6.000000005333189 0.000001
+;6.000000005333189 0.001
+;6.0002529841194185 0.01

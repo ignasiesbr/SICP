@@ -1,0 +1,9 @@
+;1.4
+(define (mystery a b)
+  ((if (> b 0) + -) a b))
+;its the same as
+(define (mystery.v2 a b)
+	(if (> b 0) (+ a b) (- a b)))
+;same as,
+;(+ a (abs b))
+; 

@@ -1,0 +1,12 @@
+;1.33
+
+(define (filtered-accumulate combiner null-value term a next b filter?)
+  (if (> a b)
+      null-value  
+      (if (filter? (term a))
+          (combiner (term a) (filtered-accumulate combiner null-value term a next b filter?))
+          (filtered-accumulate combiner null-value term a next b filter?))))
+
+  (filtered-accumulate + 0 (lambda(x) x) 0 (lambda(x) (+ x 1)) 10 even? )
+
+

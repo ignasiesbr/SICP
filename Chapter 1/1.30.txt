@@ -1,0 +1,28 @@
+;1.30 
+;The sum procedure 
+
+(define (sum term a next b)
+  (if (> a b)
+      0
+      (+ (term a)
+         (sum term (next a) next b))))
+
+;generates a linear recursion. The procedure can be rewritten to generate an iterative process.
+;fill the blanks.
+
+
+(define (sum term a next b)
+	(define (iter a result)
+		(if (> a b)
+		     result
+		     (iter (next a) (+ (term a) result))))
+	(iter a 0))
+
+;to get it iterative, you have to keep track of every state variable at each step
+;you use an accumulator (result) to keep track of the result of the sum.
+
+
+
+
+
+

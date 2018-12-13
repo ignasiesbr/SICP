@@ -1,0 +1,16 @@
+(define (test-miller-rabin n)
+	(define (try-it a)
+		(= (expmod a (- n 1) 	
+
+
+
+(define (expmod base exp m)
+	(define (square-checked n)
+		(if (and (not (= n 1)) (not (= n (- m 1)))) 0 (* n n)))
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square-checked (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))

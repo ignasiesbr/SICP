@@ -1,0 +1,42 @@
+;1.11
+(define (f n)
+	(cond
+		[(< n 3) n]
+		[else
+			(+ (f (- n 1)) (* 2 (f (- n 2))) (* 3 (f (- n 3))))]))
+
+;not iterative, recursive.
+
+(define (f.v2 n)
+	(define (f-iterative a b c n)
+		(cond	
+			[(< n 3) a]
+			[else
+				(f-iterative b c (+ a (* 2 b) (* 3 c)) (- n 1) )]))
+	(f-iterative 0 1 2 n))
+
+;we have to keep track of 3 states of info to determine the next state
+;this pieces of data are f(n-1) f(n-2) f(n-3)
+;we call them a b c
+;after 1 state the transformation is the following:
+;first state               next state
+;a = f(n-1)		a=  NEW = a (f(n-1)) + 2*b (f(n-2)) + 3 * c (f(n-3))
+;b = f(n-2)		b= a
+;c = f(n-3)		c= b
+;we initialize a b c to the first 3 states where f(n) = n
+;a = 2
+;b = 1
+;c = 0
+
+(define (f.v3 n)
+	(define (f-iter a b c n)
+		(cond
+			[(< n 3) a]
+			[else
+				;this will be the next state
+				(f-iter (+ a (* 2 b) (* 3 c)) a b (- n 1))]))
+	(f-iter 2 1 0 n))
+
+;the idea behind is to save into accumulators the values of the previous states to avoid a recursive process
+;and get a linear iterative process.
+

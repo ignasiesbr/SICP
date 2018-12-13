@@ -1,0 +1,2 @@
+;1.27 demonstrate that Carmichael numbers
+;try on carmichael numbers.

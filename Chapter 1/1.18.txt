@@ -1,0 +1,25 @@
+;1.18 Iterative process for multiplying 2 integers in terms of adding, halving and doubling.
+
+(define (even? n)
+   (= (remainder n 2) 0))
+
+(define (double x)
+   (+ x x))
+
+(define (halve x)
+   (/ x 2))
+
+(define (mul a b)
+	(define (mul-iter a b res)
+		(cond
+			[(= b 0) res]
+			[(even? b) (mul-iter (double a) (halve b) res)]
+			[else	
+				(mul-iter a (- b 1) (+ res a) )]))
+	(mul-iter a b 0))
+ 
+		
+;res accumulates all the (double a) when b is even,
+;when is odd halves b and keeps res.
+
+	 
