@@ -1,0 +1,40 @@
+;2.21
+
+(define (square-list l)
+	(cond
+		[(null? l) '()]
+		[else
+			(let ((first (car l)))
+			(cons (* first first) (square-list (cdr l))))]))
+(define (square-list-via-map l)
+	(map (lambda(x) (* x x)) l))
+
+;2.22
+
+;the Louis Reasoner's procedure produces the list in a reverse order because he's adding the items 
+;on the list in the accumulator.
+; he will cons the first item and then the second item in front of the acc.
+
+;His second answer would produce a well-ordered, but weird result.
+;This happens because he is "consing" a list with an integrer.
+;What he should do is append two lists, so changing the cons for an append would make the procedure works OK.
+(define (square x) (* x x))
+
+(define (square-list items)
+  (define (iter things answer)
+    (if (null? things)
+        answer
+        (iter (cdr things)
+              (append answer
+                    (list (square (car things)))))))
+  (iter items '()))
+
+
+;2.23
+;I've decided to apply the procedure to the empty list.
+
+(define (for-each proc l)
+	(cond
+		[(null? l) (proc '()) ]
+		[else
+			(proc (car l)) (for-each proc (cdr l))]))
