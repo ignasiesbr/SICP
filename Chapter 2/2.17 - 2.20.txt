@@ -1,0 +1,65 @@
+;2.17 
+;Lists to test
+(define list1 (list 1 2 3 4 5 6 7 8 9))
+
+;List-of-X -> List-of-X
+;returns a list with the last elemnt of a given list
+
+(define (last-pair l)
+	(cond
+		[(null? (cdr l)) (cons (car l) '())]
+		[else 
+			(last-pair (cdr l))]))
+
+;2.18 
+;list-of-X-> List-of-X
+;given a list, returns the same list with all the items in reverse order.
+
+(define (append.v2 l1 l2)
+	(cond
+		[(null? l1) l2]
+		[else	
+			(cons (car l1) (append (cdr l1) l2))]))
+
+(define (reverse l)
+	(cond
+		[(null? l) '()]
+		[else
+			(append (reverse (cdr l)) (list (car l)))]))
+
+(define list2 (reverse list1))
+
+;2.19
+
+(define us-coins (list 50 25 10 5 1))
+
+(define eur-coins (list 100 50 20 10 5 2 1 0.5))
+
+(define (cc amount coin-values)
+  (cond 
+		[(= amount 0) 1]
+    [(or (< amount 0) (no-more? coin-values)) 0]
+    [else
+         (+ (cc amount
+                (except-first-denomination coin-values))
+            (cc (- amount
+                   (first-denomination coin-values))
+                coin-values))]))
+
+(define (no-more? l) (null? l))
+(define (except-first-denomination l) (cdr l))
+(define (first-denomination l) (car l))
+
+
+;2.20
+
+(define (same-parity x . y) 
+	(let ((parity (mod x 2)))
+	(define (helper l)
+		(cond
+			[(null? l) '()]
+			[else
+				(if (= parity (mod (car l) 2)) (cons (car l) (helper (cdr l))) (helper (cdr l)))]))
+	(cons x (helper y))))
+
+	
