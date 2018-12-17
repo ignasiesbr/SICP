@@ -1,0 +1,94 @@
+;2.24 
+
+;done in paper.
+;(list 1 (list 2 (list 3 4))) is basically a first list who have another list in the second element. The latter have a 2 as first element and 
+;another list.
+
+;2.25
+
+;retrieve the 7.
+
+; (1 3 (5 7) 9)
+;(car (cdr (car (cdr (cdr l)))))
+;((7))
+;  (car (car l))
+;(1 (2 (3 (4 (5 (6 7))))))
+(define l '(1 (2 (3 (4 (5 (6 7)))))))
+;(car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr l))))))))))))
+
+;2.26 
+
+(define x (list 1 2 3))
+
+(define y (list 4 5 6))
+
+;(append x y)
+; (1 2 3 4 5 6)
+
+;(cons x y)
+;((1 2 3) 4 5 6)
+
+;(list x y)
+;((1 2 3) (4 5 6))
+
+;2.27
+
+
+
+(define (reverse l)
+	(cond
+		[(null? l) '()]
+		[(pair? (car l)) (append (reverse (cdr l)) (list (reverse (car l))))]
+		[else
+			(append (reverse (cdr l)) (list (car l)))]))
+
+;2.28
+;fringe
+
+(define (fringe l)
+	(cond
+		[(null? l) '()]
+		[(pair? (car l)) (append (car l) (fringe (cdr l)))]
+		[else
+			(cons (car l) (fringe (cdr l)))]))
+			
+
+;works ok, tested.
+
+;2.29 Binary mobile
+
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+;;
+
+(define (left-branch mobile)
+  (car mobile))
+
+(define (right-branch mobile)
+  (car (cdr mobile)))
+
+(define (branch-length branch)
+  (car branch))
+
+(define (branch-structure branch)
+  (car (cdr branch)))
+
+
+(define (total-weight mobile)
+	(cond
+		[(null? mobile) 0]
+		[(number? mobile) mobile]
+		[else
+			(+ (branch-length (left-branch mobile)) (branch-length (right-branch mobile)) 
+			 	(total-weight (branch-structure (left-branch mobile))) (total-weight (branch-structure (right-branch mobile))) )]))
+
+(define m1 (make-mobile (make-branch 2 3) (make-branch 3 4)))
+(define m2 (make-mobile (make-branch 4 2) (make-branch 1 2)))
+(define m3 (make-mobile (make-branch 1 m1) (make-branch 2 m2)))
+
+;(total-weight m3)
+;=> 24
+
