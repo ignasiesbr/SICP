@@ -1,0 +1,40 @@
+;2.30
+(define tree (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+            
+(define (square-tree tree)
+	(define (square x) (* x x))
+	(cond	
+		[(null? tree) '()]
+		[(not (pair? tree)) (square tree)]
+		[else
+			(cons (square-tree (car tree)) (square-tree (cdr tree))) ]))
+;using map
+
+(define (square-tree-via-map tree)
+	(map (lambda(subtree) (if (pair? subtree) (square-tree-via-map subtree) (* subtree subtree)) ) tree))
+;ok
+
+;2.31
+
+(define (square-tree-via-abs tree) (tree-map (lambda(x) (* x x)) tree))
+
+(define (tree-map f tree)
+  (map (lambda(sub-tree) (if (pair? sub-tree) (tree-map f sub-tree) (f sub-tree))) tree))
+
+;works ok
+
+;2.32
+
+(define (subsets s)
+  (if (null? s)
+      (list '())
+      (let ((rest (subsets (cdr s))))
+        (append rest (map (lambda(x) (cons (car s) x)) rest)))))
+
+;why it works?
+
+;it's a similar procedure that one we used at count change.
+;we define locally rest as all the sets that do not contain the first item of s (wishful thinking)
+;then we will need to cons the first item into all this sets that's the reason of (map (lambda(x) (cons (car s) x)) rest)
+
+
