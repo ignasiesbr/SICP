@@ -1,0 +1,99 @@
+;2.33
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+(define (map p sequence)
+  (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
+
+(define (append seq1 seq2)
+  (accumulate cons seq2 seq1))
+
+(define (length sequence)
+  (accumulate (lambda(x y) (+ 1 y)) 0 sequence)) 
+
+;2.34
+
+(define (helper exp n x)
+	 (expt (* n x) exp))
+
+(define (horner-eval x seq)
+	(accumulate
+							(lambda(coef higher-terms) (+ (* higher-terms x) coef))
+							0
+							seq))
+;test 
+;  1+3x+5x3+x5 = (list 1 3 0 5 0 1) -> (en 2) 32 + 0 + 40 + 6 + 1 = 79
+;1*2^0 = 1
+;3*2^1 = 6 
+; . . .
+
+;2.35
+
+(define (enumerate-tree tree)
+  (cond ((null? tree) '())
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+;It works, without map
+(define (count-leaves.v1 tree)
+	(accumulate
+							(lambda(x y) (+ 1 y))
+							0
+							(enumerate-tree tree)))
+
+(define tree1 (list (list 1 2) (list 3 4) 5 (list 6 7) 8))
+;count-leaves tree1 -> 8
+
+;using map
+
+(define (count-leaves tree)
+	(accumulate 
+		+ 0 (map (lambda(x) (if (pair? x) (count-leaves x) 1)) tree)))
+
+;Map explanation
+;if its a pair, you want to count the leaves of the resulting sub-tree, else would mean its a leave, so return 1.
+;Accumulate everything with + with an initial value of 0 leaves.
+
+
+;2.36
+
+;In this exercise we will need two things,
+;1- make a procedure that returs us the first value of a list of sequences.
+;2- make a proecudre that returns us the list of sequences without all the first values on each seq.
+
+(define (first-values seq)
+	(cond
+		[(null? seq) '()]
+		[else
+			(cons (car (car seq)) (first-values (cdr seq)))]))
+(define (except-first-values seq)
+	(cond
+		[(null? seq) '()]
+		[else
+			(cons (cdr (car seq)) (except-first-values (cdr seq)))]))
+
+(define s (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12)))
+
+(define (accumulate-n.v0 op init seqs)
+  (if (null? (car seqs))
+      '()
+      (cons (accumulate op init (first-values seqs))
+            (accumulate-n.v0 op init (except-first-values seqs)))))
+
+;Works OK
+;Let's try to map the first and except-first values.
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      '()
+      (cons (accumulate op init (map (lambda(x) (car x)) seqs))
+            (accumulate-n op init (map (lambda(x) (cdr x)) seqs)))))
+;OK
+
+
+
+
