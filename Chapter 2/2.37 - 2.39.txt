@@ -1,0 +1,85 @@
+;2.37
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+
+(define v1 (list 1 2 3 4))
+(define v2 (list 5 6 7 8))
+(define v3 (list 3 4 5 6))
+(define m1 (list v1 v2 v3))
+
+(define v4 (list 6 2 3 4))
+(define v5 (list 5 7 7 2))
+(define v6 (list 3 4 1 6))
+(define m2 (list v4 v5 v6))
+
+(define v1t (list 1 5 3))
+(define v2t (list 2 6 4))
+(define v3t (list 3 7 5))
+(define v4t (list 4 8 6))
+(define m1t (list v1t v2t v3t v4t))
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+(define (matrix-*-vector m v)
+  (map (lambda(x) (dot-product x v)) m))
+
+
+;in order to doing transpose we will need accumulate-n
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      '()
+      (cons (accumulate op init (map (lambda(x) (car x)) seqs))
+            (accumulate-n op init (map (lambda(x) (cdr x)) seqs)))))
+
+(define (transpose m)
+	(accumulate-n cons '() m ))
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda(x) (matrix-*-vector cols x)) m)))
+
+;2.38
+
+;defining foldr foldl
+
+(define (foldr op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (foldr op initial (cdr sequence)))))
+
+(define (foldl op initial sequence)
+  (define (iter result rest)
+    (if (null? rest)
+        result
+        (iter (op result (car rest))
+              (cdr rest))))
+  (iter initial sequence))
+
+;(foldr / 1 (list 1 2 3)) -> 1.5
+;(foldl / 1 (list 1 2 3)) -> 0.166
+;(foldr list '() (list 1 2 3)) -> (1 (2 (3 ())))
+;(foldl list '() (list 1 2 3)) -> (((() 1) 2) 3)
+
+;give a property that op should satisify to ensure the same results with foldr and foldl
+
+;op should satisfy commutativity
+; a + b= b+a, a*b = b*a
+
+;2.39
+
+(define (reverse-r sequence)
+  (foldr (lambda (x y) (append y (list x)) ) '() sequence))
+
+(define (reverse-l sequence)
+  (foldl (lambda (x y) (cons y x)) '() sequence))
+;after this exercise I get a lot more how folds works.
+
+
