@@ -1,0 +1,123 @@
+;required functions
+
+;accumulate
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+;ennumerate-interval
+
+(define (enumerate-interval low high)
+  (if (> low high)
+      '()
+      (cons low (enumerate-interval (+ low 1) high))))
+
+(define (flatmap proc seq)
+  (accumulate append '() (map proc seq)))
+
+(define (permutations s)
+  (if (null? s)                    ; empty set?
+      (list '())                   ; sequence containing empty set
+      (flatmap (lambda (x)
+                 (map (lambda (p) (cons x p))
+                      (permutations (remove x s))))
+               s)))
+
+;2.40
+
+(define (unique-pairs n)
+	(flatmap (lambda(i) (map (lambda(j) (list i j)) (enumerate-interval 1 (- i 1)))) (enumerate-interval 1 n)))
+
+; (define (prime-sum-pairs n)
+;   (map make-pair-sum
+;        (filter prime-sum?
+;                (unique-pairs n)
+; 							 )))
+
+;2.41
+
+;Number Number-> List-of-list-of-Numbers
+;interp. given two positives integers n and s.
+;find all ordered triples of integers i j k that are lower than n and the sum of i k j have to b lower than s.
+
+; (define (find-triples n s))
+
+
+;to make n triple pairs from 1 to n
+
+(define (make-triples n)
+	(flatmap (lambda(i) (map (lambda(j) (map (lambda(k) (list i j k)) (enumerate-interval 1 n))) (enumerate-interval 1 n))) (enumerate-interval 1 n)))
+
+(define l1 (make-triples 3))
+
+(define (append-triples l)
+	(cond
+		[(null? l) '()]
+		[else
+			(append (car l) (append-triples (cdr l)))]))
+
+(define l2 (append-triples l1))
+(define test (car l2))
+
+(define (find-triples n s)
+	(filter (lambda(x) (= s (+ (car x) (cadr x) (car (cdr (cdr x)))))) (append-triples (make-triples n))))
+
+;works, I don't like having to append the triples to make to procedure work.
+;to solve this need of append-triples its only needed to change in the make-triples procedures the first map that appears with a flatmap
+
+
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= k 0)
+        (list empty-board)
+        (filter
+         (lambda (positions) (safe? k positions))
+         (flatmap
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (enumerate-interval 1 board-size)))
+          (queen-cols (- k 1))))))
+  (queen-cols board-size))
+
+
+(define empty-board '())
+
+(define (make-position row col)
+   (cons row col))
+
+(define (position-row pos)
+	(car pos))
+
+(define (position-col pos)
+	(cdr pos))
+
+
+(define (adjoin-position new-row k rest-of-queens)
+	(append rest-of-queens (list (cons new-row k))))
+
+;copied of Bill the Lizard Solutions.
+
+(define (safe? col positions)
+   (let ((kth-queen (list-ref positions (- col 1)))
+         (other-queens (filter (lambda (q)
+                                 (not (= col (position-col q))))
+                               positions)))
+   (define (attacks? q1 q2)
+     (or (= (position-row q1) (position-row q2))
+         (= (abs (- (position-row q1) (position-row q2)))
+            (abs (- (position-col q1) (position-col q2))))))
+
+   (define (iter q board)
+     (or (null? board)
+         (and (not (attacks? q (car board)))
+              (iter q (cdr board)))))
+   (iter kth-queen other-queens)))
+
+;2.43 
+;changing the order of execution of queen-cols (a very expensive procedure)
+;makes that the program is executing queen-cols more often.
+;so if the program was taking T time to execute, with the change will take T ^ board-size
